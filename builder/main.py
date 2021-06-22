@@ -17,8 +17,38 @@ from platform import system
 from os import makedirs
 from os.path import isdir, join
 
-from SCons.Script import (ARGUMENTS, COMMAND_LINE_TARGETS, AlwaysBuild,
-                          Builder, Default, DefaultEnvironment)
+from SCons.Script import (
+    ARGUMENTS,
+    COMMAND_LINE_TARGETS,
+    AlwaysBuild,
+    Builder,
+    Default,
+    DefaultEnvironment,
+    WhereIs
+)
+
+def generate_vh(target, source, env):
+    binary_file = source[0].get_path()
+    assert binary_file.endswith(".bin")
+    vh_file = binary_file.replace(".bin", ".vh")
+    result = ""
+    with open(binary_file, "rb") as fp:
+        cnt = 7
+        s = ["00"] * 8
+        while True:
+            data = fp.read(1)
+            if not data:
+                result = result + "".join(s) + "\n"
+                break
+            s[cnt] = "{:02X}".format(data[0])
+            if cnt == 0:
+                result = result + "".join(s) + "\n"
+                s = ["00"] * 8
+                cnt = 8
+            cnt -= 1
+
+    with open(vh_file, "wb") as fp:
+        fp.write(bytes(result, "ascii"))
 
 
 env = DefaultEnvironment()
@@ -43,6 +73,7 @@ env.Replace(
     PROGSUFFIX=".elf"
 )
 
+
 # Allow user to override via pre:script
 if env.get("PROGNAME", "program") == "program":
     env.Replace(PROGNAME="firmware")
@@ -50,15 +81,22 @@ if env.get("PROGNAME", "program") == "program":
 env.Append(
     BUILDERS=dict(
         ElfToHex=Builder(
-            action=env.VerboseAction(" ".join([
-                "$OBJCOPY",
-                "-O",
-                "ihex",
-                "$SOURCES",
-                "$TARGET"
-            ]), "Building $TARGET"),
+            action=env.VerboseAction(
+                " ".join([ "$OBJCOPY", "-O", "ihex", "$SOURCES", "$TARGET" ]),
+                "Building $TARGET"
+            ),
             suffix=".hex"
-        )
+        ),
+        ElfToBin=Builder(
+            action=env.VerboseAction(
+                " ".join(["$OBJCOPY", "-O", "binary", "$SOURCES", "$TARGET"]),
+                "Building $TARGET",
+            ),
+            suffix=".bin",
+        ),
+        BinToVh=Builder(action=env.VerboseAction(generate_vh, "Building $TARGET"),
+            suffix=".vh"
+        ),
     )
 )
 
@@ -73,18 +111,24 @@ if not pioframework:
 
 if "zephyr" in pioframework:
     env.SConscript(
-        join(platform.get_package_dir(
-            "framework-zephyr"), "scripts", "platformio", "platformio-build-pre.py"),
+        join(platform.get_package_dir("framework-zephyr"),
+            "scripts", "platformio", "platformio-build-pre.py"),
         exports={"env": env}
     )
 
 target_elf = None
 if "nobuild" in COMMAND_LINE_TARGETS:
     target_elf = join("$BUILD_DIR", "${PROGNAME}.elf")
+    target_bin = join("$BUILD_DIR", "${PROGNAME}.bin")
     target_hex = join("$BUILD_DIR", "${PROGNAME}.hex")
+    target_vh  = join("$BUILD_DIR", "${PROGNAME}.vh")
 else:
+    print("=====")
     target_elf = env.BuildProgram()
+    print("xxx=====")
     target_hex = env.ElfToHex(join("$BUILD_DIR", "${PROGNAME}"), target_elf)
+    target_bin = env.ElfToBin(join("$BUILD_DIR", "${PROGNAME}"), target_elf)
+    target_hex = env.BinToVh(join("$BUILD_DIR", "${PROGNAME}"), target_bin)
 
 AlwaysBuild(env.Alias("nobuild", target_hex))
 target_buildprog = env.Alias("buildprog", target_hex, target_hex)
@@ -180,11 +224,12 @@ elif upload_protocol == "custom":
 else:
     sys.stderr.write("Warning! Unknown upload protocol %s\n" % upload_protocol)
 
-AlwaysBuild(env.Alias("upload", upload_target, upload_actions))
+#AlwaysBuild(env.Alias("upload", upload_target, upload_actions))
 
 
 #
 # Setup default targets
 #
+print("<<<<<===================")
 
 Default([target_buildprog, target_size])

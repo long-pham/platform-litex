@@ -25,6 +25,27 @@ from SCons.Script import Import, SConscript
 
 Import("env")
 
+build_config = env.BoardConfig().get("build")
+if "zephyr" not in build_config:
+    build_config["zephyr"] = dict()
+
+if "cmake_extra_args" not in build_config["zephyr"]:
+    build_config["zephyr"]["cmake_extra_args"] = "-DBOARD=litex_vexriscv"
+
+print("xxxxxxxxxxxx", build_config)
+
+
+print(env.PioPlatform().get_package_dir("framework-zephyr"),
+        "scripts",
+        "platformio",
+        "platformio-build.py"
+)
 SConscript(
-    join(env.PioPlatform().get_package_dir("framework-zephyr"), "scripts",
-         "platformio", "platformio-build.py"), exports="env") 
+    join(
+        env.PioPlatform().get_package_dir("framework-zephyr"),
+        "scripts",
+        "platformio",
+        "platformio-build.py"
+    ),
+    exports="env"
+) 

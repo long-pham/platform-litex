@@ -23,6 +23,11 @@ Import("env")
 board_config = env.BoardConfig()
 
 env.Append(
+    ASFLAGS=[
+        "-x", "assembler-with-cpp",
+        "-Wa,-march=%s" % board.get("build.march")
+    ],
+
     CCFLAGS=[
         "-Os",
         "-Wall",  # show warnings
