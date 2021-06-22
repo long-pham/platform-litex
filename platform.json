@@ -1,5 +1,5 @@
 {
-  "name": "litex_riscv",
+  "name": "litex_vexriscv",
   "title": "LiteX",
   "description": "LiteX is a Migen/MiSoC based Core/SoC builder that provides the infrastructure to easily create Cores/SoCs.",
   "homepage": "https://github.com/enjoy-digital/litex/wiki",
