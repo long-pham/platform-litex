@@ -1,6 +1,6 @@
 # LiteX: development platform for [PlatformIO](http://platformio.org)
 
-Build automation for [LiteX](https://github.com/enjoy-digital/litex) based boards, with a focus on RISC-V based soft cores. Still early development. 
+Build automation for [LiteX](https://github.com/enjoy-digital/litex) boards, with a focus on RISC-V based soft cores. Still early development. 
 
 # Usage
 
