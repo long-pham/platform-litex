@@ -11,8 +11,9 @@ Build automation for [LiteX](https://github.com/enjoy-digital/litex) boards, wit
 
 ```ini
 [env:stable]
-platform = litex
-board = ...
+platform = litex_riscv
+board = litex_vexriscv
+framework = zephyr
 ...
 ```
 
@@ -21,7 +22,8 @@ board = ...
 ```ini
 [env:development]
 platform = https://github.com/hvegh/platform-litex.git
-board = ...
+board = litex_vexriscv
+framework = zephyr
 ...
 ```
 
