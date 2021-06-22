@@ -123,9 +123,7 @@ if "nobuild" in COMMAND_LINE_TARGETS:
     target_hex = join("$BUILD_DIR", "${PROGNAME}.hex")
     target_vh  = join("$BUILD_DIR", "${PROGNAME}.vh")
 else:
-    print("=====")
     target_elf = env.BuildProgram()
-    print("xxx=====")
     target_hex = env.ElfToHex(join("$BUILD_DIR", "${PROGNAME}"), target_elf)
     target_bin = env.ElfToBin(join("$BUILD_DIR", "${PROGNAME}"), target_elf)
     target_hex = env.BinToVh(join("$BUILD_DIR", "${PROGNAME}"), target_bin)
@@ -230,6 +228,5 @@ else:
 #
 # Setup default targets
 #
-print("<<<<<===================")
 
 Default([target_buildprog, target_size])
