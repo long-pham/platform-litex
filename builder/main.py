@@ -59,7 +59,7 @@ board_config = env.BoardConfig()
 env.Replace(
     AR="riscv64-zephyr-elf-gcc-ar",
     AS="riscv64-zephyr-elf-as",
-    CC="riscv64-unknown-elf-gcc",
+    CC="riscv64-zephyr-elf-gcc",
     GDB="riscv64-zephyr-elf-gdb",
     CXX="riscv64-zephyr-elf-g++",
     OBJCOPY="riscv64-zephyr-elf-objcopy",
