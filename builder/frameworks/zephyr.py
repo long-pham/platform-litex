@@ -32,12 +32,17 @@ if "zephyr" not in build_config:
 if "cmake_extra_args" not in build_config["zephyr"]:
     build_config["zephyr"]["cmake_extra_args"] = "-DBOARD=litex_vexriscv"
 
+# SConscript(
+#     join(
+#         env.PioPlatform().get_package_dir("framework-zephyr"),
+#         "scripts",
+#         "platformio",
+#         "platformio-build.py"
+#     ),
+#     exports="env"
+# ) 
+
 SConscript(
-    join(
-        env.PioPlatform().get_package_dir("framework-zephyr"),
-        "scripts",
-        "platformio",
-        "platformio-build.py"
-    ),
+    "zephyr-pio-build.py",
     exports="env"
 ) 
