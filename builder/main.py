@@ -56,22 +56,22 @@ env.SConscript("compat.py", exports="env")
 platform = env.PioPlatform()
 board_config = env.BoardConfig()
 
-env.Replace(
-    AR="riscv64-unknown-elf-gcc-ar",
-    AS="riscv64-unknown-elf-as",
-    CC="riscv64-unknown-elf-gcc",
-    GDB="riscv64-unknown-elf-gdb",
-    CXX="riscv64-unknown-elf-g++",
-    OBJCOPY="riscv64-unknown-elf-objcopy",
-    RANLIB="riscv64-unknown-elf-gcc-ranlib",
-    SIZETOOL="riscv64-unknown-elf-size",
+# env.Replace(
+#     AR="riscv64-zephyr-elf-gcc-ar",
+#     AS="riscv64-zephyr-elf-as",
+#     CC="riscv64-unknown-elf-gcc",
+#     GDB="riscv64-zephyr-elf-gdb",
+#     CXX="riscv64-zephyr-elf-g++",
+#     OBJCOPY="riscv64-zephyr-elf-objcopy",
+#     RANLIB="riscv64-zephyr-elf-gcc-ranlib",
+#     SIZETOOL="riscv64-zephyr-elf-size",
 
-    ARFLAGS=["rc"],
+#     ARFLAGS=["rc"],
 
-    SIZEPRINTCMD='$SIZETOOL -d $SOURCES',
+#     SIZEPRINTCMD='$SIZETOOL -d $SOURCES',
 
-    PROGSUFFIX=".elf"
-)
+#     PROGSUFFIX=".elf"
+# )
 
 
 # Allow user to override via pre:script

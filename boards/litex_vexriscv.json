@@ -2,7 +2,7 @@
   "build": {
     "f_cpu": "60000000L",
     "mabi": "ilp32",
-    "march": "rv32im",
+    "march": "rv32i2p0_m",
     "mcmodel": "medlow",
     "mcu": "vexriscv",
     "zephyr": {
