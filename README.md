@@ -4,10 +4,10 @@ Build automation for [LiteX](https://github.com/enjoy-digital/litex) boards, wit
 
 # Installation
 ```
-git clone https://github.com/long-pham/platform-litex.git
-# install uv
+# install uv if it's not already installed
 curl -LsSf https://astral.sh/uv/install.sh | sh
 
+git clone https://github.com/long-pham/platform-litex.git
 cd platform-litex/examples/hallo
 
 # option 1: just try building the example
@@ -15,6 +15,7 @@ uv run pio run
 
 # option 2: create .venv and run normal pio workflow
 uv sync
+. ../../.venv/bin/activate
 pio run
 
 ```
