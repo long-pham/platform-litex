@@ -1,0 +1,17 @@
+[project]
+name = "platform-litex"
+version = "0.1.0"
+description = "platformio platform for litex soc"
+readme = "README.md"
+authors = [
+    { name = "Long Pham", email = "lpham@lucidfw.com" }
+]
+requires-python = ">=3.10"
+dependencies = [
+    "pip>=24.3.1",
+    "platformio>=6.1.16",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
